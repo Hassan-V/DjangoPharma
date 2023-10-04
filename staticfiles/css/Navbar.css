@@ -1,0 +1,41 @@
+:root {
+    --primary-bg-color: #232323;
+    --primary-text-color: #ffffff;
+    --secondary-bg-color: #333;
+    --secondary-text-color: #ccc;
+    --accent-color: #3498db;
+    --accent-hover-color: #fdfdfd;
+    --additional-text-color: #666;
+}
+
+
+/* Navbar.css */
+.navbar {
+    background-color: var(--accent-color) !important;
+    padding: 10px 0; /* Add padding to the navbar for better spacing */
+}
+
+.navbar-brand {
+    margin-right: 20px; /* Adjust the margin to separate the logo from text */
+}
+
+/* Style for "Zainab Clinic" text */
+.navbar-text {
+    font-size: 24px; /* Adjust the font size */
+    color: var(--primary-text-color); /* Use a primary text color for better contrast */
+    margin: 0 auto; /* Center the text horizontally */
+    text-align: center; /* Center-align the text */
+}
+
+/* Add hover effect for navbar links */
+.navbar-nav .nav-link:hover {
+    color: var(--accent-hover-color) !important;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Increase the size of the logo */
+.navbar-brand img {
+    width: 60px; /* Adjust the width to make the logo larger */
+    height: 60px; /* Adjust the height to maintain aspect ratio */
+    border-radius: 50%; /* Make the logo circular */
+}
