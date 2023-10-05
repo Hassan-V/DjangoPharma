@@ -22,4 +22,6 @@ app_name = "main"
 urlpatterns = [
     path('',views.homepage, name = "HomePage"),
     path('register/',views.register ,name = "Register"),
+    path('logout/',views.logout_request ,name = "Logout"),
+    path('login/',views.login_request ,name = "Login"),
 ]

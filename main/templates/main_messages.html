@@ -1,27 +1,10 @@
 {% if messages %}
-  <div class="toast-container bottom-0 end-0 ">
+<div class="fixed bottom-0 right-0 p-4 space-x-4 flex flex-col items-end">
     {% for message in messages %}
-    <div class="toast align-items-center bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body">{{ message }}</div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-          aria-label="Close"></button>
-      </div>
+    <div class="bg-primary text-white border border-primary rounded-lg p-2 px-4 shadow-md">
+        {{ message }}
+        <button type="button" class="text-white ml-2" onclick="this.parentElement.style.display='none'">×</button>
     </div>
     {% endfor %}
-  </div>
-  {% endif %}
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var toastElList = [].slice.call(document.querySelectorAll(".toast"));
-      var toastList = toastElList.map(function (toastEl) {
-        return new bootstrap.Toast(toastEl);
-      });
-
-      // Show the toasts
-      toastList.forEach(function (toast) {
-        toast.show();
-      });
-    });
-  </script>
+</div>
+{% endif %}

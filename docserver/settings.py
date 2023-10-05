@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     "tinymce",
     'corsheaders',
+    #'tailwind',
+    #'pharmatheme',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +84,12 @@ CORS_ALLOWED_ORIGINS = [
 
 
 ROOT_URLCONF = 'docserver.urls'
+
+TAILWIND_APP_NAME = 'pharmatheme'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 TEMPLATES = [
     {

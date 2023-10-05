@@ -1,20 +1,50 @@
-{% extends 'main_base.html'%} {% load static %} {% block content %}
-<div class="container mt-5 hero-section">
-  <div class="row">
-    <div class="col-md-6">
-      <h1 class="hero-title">Welcome to Pharmacy Inventory Management</h1>
-      <p class="hero-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at justo
-        sit amet lorem fringilla aliquam.
-      </p>
-      <a href="#" class="btn btn-primary">Learn More</a>
+{% extends 'main_base.html' %}
+{% load static %}
+{% block content %}
+<div class="bg-gray-900 text-white p-10">
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div>
+        <!-- Your text content here -->
+        <h1 class="text-3xl md:text-5xl font-semibold mb-4">Welcome to Pharmacy Inventory Management</h1>
+        <p class="text-lg md:text-xl text-gray-300 mb-8">
+          <!-- Your text here -->
+        </p>
+        <p class="text-lg md:text-xl text-gray-300 mb-8">
+          <!-- Your text here -->
+        </p>
+        <a href="#" class="bg-primary text-white py-2 px-4 rounded-full hover:bg-primary-hover transition duration-300">Learn More</a>
+      </div>
+      <div class="mt-4 md:mt-0">
+        <img src="{% static 'img/img_home.jpg' %}" alt="Pharmacy Inventory" class="w-full rounded-lg" />
+      </div>
     </div>
-    <div class="col-md-6">
-      <img
-        src="{% static 'img/img_home.jpg' %}"
-        alt="Pharmacy Inventory"
-        class="img-fluid"
-      />
+
+    <!-- Gallery placeholder -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+      <!-- Card 1 -->
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <!-- Add your image here -->
+        <img src="{% static 'img/gallery_image1.jpg' %}" alt="Gallery Image 1" class="w-full h-40 object-cover rounded-lg mb-4">
+        <!-- Add any additional content or captions here -->
+        <p class="text-gray-800 text-sm">Caption for Image 1</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <!-- Add your image here -->
+        <img src="{% static 'img/gallery_image2.jpg' %}" alt="Gallery Image 2" class="w-full h-40 object-cover rounded-lg mb-4">
+        <!-- Add any additional content or captions here -->
+        <p class="text-gray-800 text-sm">Caption for Image 2</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <!-- Add your image here -->
+        <img src="{% static 'img/gallery_image3.jpg' %}" alt="Gallery Image 3" class="w-full h-40 object-cover rounded-lg mb-4">
+        <!-- Add any additional content or captions here -->
+        <p class="text-gray-800 text-sm">Caption for Image 3</p>
+      </div>
     </div>
   </div>
 </div>
