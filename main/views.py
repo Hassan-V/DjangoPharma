@@ -3,12 +3,15 @@ from main.forms.CustomUserCreationForm import CustomUserCreationForm
 from main.forms.CustomAuthenticationForm import CustomAuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 def homepage(request):
     return render(request, 'main_hompage.html')
 
 def register(request):
+
+
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -63,3 +66,20 @@ def login_request(request):
     else:
         form = CustomAuthenticationForm()
         return render(request, "main_login.html", {"form": form})
+
+
+def dashboard(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff or request.user.is_superuser:
+            # Staff or superuser, allow access to the dashboard
+            return render(request, 'main_dashboard.html')
+        else:
+            # Authenticated but not staff, you can handle this case, e.g., show an error message or redirect
+            return error_page(request,"Invalid User Permissions!")
+    else:
+        # Not authenticated, redirect to login
+        return redirect("main:HomePage")
+        
+        
+def error_page(request, data):
+    return render(request,"main_error.html", context={"data": data})
