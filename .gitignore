@@ -1,2 +1,6 @@
-jagomaou/
-webi/
+Django-Pharma/
+**/__pycache__/
+**/migrations/*
+!**/migrations/__init__.py
+node_modules/
+package-lock.json
