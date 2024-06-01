@@ -1,59 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-    />
-    <title>Zainab Clinic</title>
-    {% load static %}
-    <link
-      rel="icon"
-      href="{% static 'img\icons\icon16x16.ico' %}"
-      type="image/x-icon"
-    />
-    <link
-      rel="icon"
-      href="{% static 'img\icons\icon32x32.ico' %}"
-      type="image/x-icon"
-    />
-    <link
-      rel="icon"
-      href="{% static 'img\icons\icon96x96.ico' %}"
-      type="image/x-icon"
-    />
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+  <title>Abyssal Pharmacy</title>
+  {% load static %}
+  <link rel="icon" href="{% static 'img/icons/icon16x16.ico' %}" type="image/x-icon" />
+  <link rel="icon" href="{% static 'img/icons/icon32x32.ico' %}" type="image/x-icon" />
+  <link rel="icon" href="{% static 'img/icons/icon96x96.ico' %}" type="image/x-icon" />
+  
+  <link rel="stylesheet" href="{% static 'css/TailwindFinal.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/MainNavbar.css' %}" />
 
-    <!-- Link to your custom-built Tailwind CSS file -->
-    <link rel="stylesheet" href="{% static 'css/TailwindFinal.css' %}" />
+  <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" /-->
+  <!--script src="https://cdn.tailwindcss.com"></script-->
+  <!--script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script-->
+</head>
 
-    <!-- Link your external CSS file -->
-    <link rel="stylesheet" href="{% static 'css/MainHomepage.css' %}" />
+<body class="bg-white dark:bg-gray-900 text-black dark:text-white">
+  
+  {% include 'main_navbar.html' %}
+  <script src="{% static 'js/main.js' %}"></script>
 
-    <!--script src="https://cdn.tailwindcss.com"></script-->
-    <!--script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script-->
-  </head>
+  {% include 'main_messages.html' %} {% block content %} {% endblock %}
 
-  <body class="bg-gray-800">
-    {% include 'main_navbar.html' %}
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 
-    <!-- Include your content block -->
-    {% include 'main_messages.html' %} {% block content %} {% endblock %}
+  {% include 'main_footer.html' %}
+</body>
 
-    <!-- Include Bootstrap JavaScript (optional) -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
-
-    <!-- Include your footer -->
-    {% include 'main_footer.html' %}
-  </body>
 </html>

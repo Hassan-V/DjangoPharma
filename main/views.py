@@ -66,7 +66,6 @@ def login_request(request):
         else:
             messages.error(request, f"Invalid Username or Password")
 
-        # Add this line to return a response when the form is not valid or authentication fails
         return render(request, "main_login.html", {"form": form})
 
     else:

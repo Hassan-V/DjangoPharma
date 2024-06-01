@@ -60,8 +60,6 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     "tinymce",
     'corsheaders',
-    #'tailwind',
-    #'pharmatheme',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +77,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:9000",  # Add your development server addresses
-    "http://192.168.0.113:8000",  # Add your specific addresses
+    "http://192.168.0.3:8000",  # Add your specific addresses
 ]
 
 
@@ -150,6 +148,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
 # Static files (CSS, JavaScript, Images)

@@ -10,7 +10,8 @@
     "tailwindcss": "^3.4.3"
   },
   "scripts": {
-    "build:css": "npx tailwindcss -i main/static/css/TailwindLocal.css -o main/static/css/TailwindFinal.css"
+    "build:css": "npx tailwindcss -i main/static/css/TailwindLocal.css -o main/static/css/TailwindFinal.css",
+    "b:css": "npx tailwindcss build main/static/css/TailwindLocal.css -o main/static/css/TailwindFinal.css"
   },
   "devDependencies": {
     "postcss": "^8.4.38"
