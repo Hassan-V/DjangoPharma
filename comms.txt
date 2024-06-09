@@ -1,1 +1,52 @@
-npm run build:css
+<script>
+          let popup = document.getElementById("popup");
+          function openPopup() {
+            popup.classList.add("open-popup");
+          }
+          function closePopup() {
+            popup.classList.remove("open-popup");
+          }
+
+          function deleteStatus(id) {
+            if (confirm('Are you sure you want to delete this status?')) {
+              fetch(/status/delete/${id}, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  document.querySelector(tr[data-status-id="${id}"]).remove();
+                } else {
+                  alert('Failed to delete status: ' + data.message);
+                }
+              });
+            }
+          }
+        </script>
+
+        function deleteMenuItem(itemId) {
+              if (confirm('Are you sure you want to delete this menu item?')) {
+                fetch(/menu/delete/${itemId}, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.status === 'success') {
+                      const row = document.querySelector(#trash-${itemId}).parentNode.parentNode; // Select the parent <tr> of the delete button
+                      if (row) {
+                        row.remove();
+                      }
+                      alert(data.message);
+                    } else {
+                      alert('Failed to delete menu item');
+                    }
+                  })
+                  .catch(error => console.error('Error:', error));
+              }
+            }
