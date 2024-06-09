@@ -4,3 +4,5 @@ Django-Pharma/
 !**/migrations/__init__.py
 node_modules/
 package-lock.json
+django-stuff/
+django-brush/
