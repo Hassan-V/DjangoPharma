@@ -7,3 +7,5 @@ package-lock.json
 node_modules
 django-stuff/
 django-brush/
+comms.txt
+PhNode/
