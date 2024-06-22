@@ -7,9 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
 class Customer(models.Model):
-    name = models.CharField(max_length=255)
-    phone = PhoneNumberField()
-    email = models.EmailField(unique=True)
+    name  : str  = models.CharField(max_length=255)
+    phone : int  = PhoneNumberField()
+    email : str  = models.EmailField(unique=True)
 
     def __str__(self):
         return self.name
@@ -19,11 +19,11 @@ class Discount(models.Model):
         ('percentage', 'Percentage'),
         ('fixed_amount', 'Fixed Amount'),
     )
-    discount_type = models.CharField(max_length=20, choices=DISCOUNT_TYPES)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    applicability = models.TextField()  # Define the applicability logic
-    start_date = models.DateField()
-    end_date = models.DateField()
+    discount_type : str = models.CharField(max_length=20, choices=DISCOUNT_TYPES)
+    amount : float = models.DecimalField(max_digits=10, decimal_places=2)
+    applicability: bool = models.BooleanField()  # Define the applicability logic
+    start_date : date = models.DateField()
+    end_date : date = models.DateField()
 
     def apply(self, amount):
         if not isinstance(amount, Decimal):
@@ -50,10 +50,10 @@ class Discount(models.Model):
     
 class Product(models.Model):
     CATEGORY_CHOICES = (
-        ('pharmaceutical', 'Pharmaceutical'),
-        ('cosmetic', 'Cosmetic'),
-        ('herbal', 'Herbal'),
-        ('other', 'Other'),
+        ('tablet', 'Tablet'),
+        ('syrup', 'Syrup'),
+        ('injection', 'Injection'),
+        ('miscellaneous', 'Miscellaneous'),
     )
 
     company_name = models.CharField(max_length=255)
@@ -64,6 +64,7 @@ class Product(models.Model):
     expiry_date = models.DateField()
     manufacturer = models.CharField(max_length=255)
     category = models.CharField(max_length=255, choices=CATEGORY_CHOICES)
+    image = models.ImageField(upload_to='product_images/')
 
     def clean(self):
         if self.price and self.price < 0:
@@ -133,7 +134,7 @@ class OrderItem(models.Model):
 
     @property
     def subtotal_price(self):
-        return self.quantity * self.product.price  # Assuming Product model has a 'price' field
+        return self.quantity * self.product.price 
 
     def clean(self):
         if self.quantity and self.quantity < 1:

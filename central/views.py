@@ -1,10 +1,11 @@
 from functools import wraps
 from django.shortcuts import render, redirect
-from main.forms.CustomUserCreationForm import CustomUserCreationForm
-from main.forms.CustomAuthenticationForm import CustomAuthenticationForm
+from central.forms.CustomUserCreationForm import CustomUserCreationForm
+from central.forms.CustomAuthenticationForm import CustomAuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import Product
 
 # Create your views here.
 def homepage(request):
@@ -77,7 +78,7 @@ def dashboard(request):
     return render(request, 'main_dashboard.html')
 
 @staff_or_superuser_required
-def products(request):
+def mod_products(request):
     return render(request, 'main_product.html')
 
 @staff_or_superuser_required
@@ -86,3 +87,7 @@ def orders(request):
         
 def error_page(request, data):
     return render(request,"main_error.html", context={"data": data})
+
+def view_products(request):
+    products = Product.objects.all()  # Query all products from the database
+    return render(request, 'main_products.html', {'products': products})

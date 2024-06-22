@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,7 +39,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'cleanup_on_startup': True,
     'custom_undo_redo_levels': 20,
     'selector': 'textarea',
-    'theme': 'modern',  # You can choose a different theme if you prefer.
+    'theme': 'modern', 
     'plugins': '''
         textcolor save autosave lists link image charmap print preview anchor
         searchreplace visualblocks code fullscreen insertdatetime media table
@@ -62,7 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
+    'central.apps.MainConfig',
     'tinymce',
     'corsheaders',
     'django.contrib.sites',
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.microsoft',
     'allauth.socialaccount.providers.facebook',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +81,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  # Add this line
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -89,8 +91,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
-    "http://127.0.0.1:9000",  # Add your development server addresses
-    "http://192.168.0.3:8000",  # Add your specific addresses
+    "http://127.0.0.1:9000",  
+    "http://192.168.0.3:8000",
 ]
 
 
@@ -195,5 +197,7 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 2
 
 LOGIN_REDIRECT_URL = '/'
-# Optionally, specify a URL to redirect to on logout.
 LOGOUT_REDIRECT_URL = '/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

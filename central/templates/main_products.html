@@ -1,0 +1,35 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% block content %}
+<div class="bg-white dark:bg-gray-800">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Product Listing</h1>
+    <div class="product-list">
+        {% for product in products %}
+            <div class="product bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                <h2 class="text-xl text-gray-800 dark:text-gray-200">{{ product.name }}</h2>
+                <!-- Display product image if it exists -->
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                {% endif %}
+                <p class="text-gray-600 dark:text-gray-400">{{ product.description }}</p>
+                <p class="text-gray-900 dark:text-gray-300">Price: ${{ product.price }}</p>
+                <!-- Add more product details as needed -->
+            </div>
+        {% empty %}
+            <p class="text-gray-600 dark:text-gray-400">No products found.</p>
+        {% endfor %}
+    </div>
+    <!-- Pagination links -->
+    {% if products.has_other_pages %}
+        <div class="pagination flex space-x-2">
+            {% if products.has_previous %}
+                <a href="?page={{ products.previous_page_number }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Previous</a>
+            {% endif %}
+            <span class="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200">Page {{ products.number }} of {{ products.paginator.num_pages }}</span>
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

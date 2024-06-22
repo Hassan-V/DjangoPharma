@@ -25,7 +25,9 @@ urlpatterns = [
     path('logout/',views.logout_request ,name = "Logout"),
     path('login/',views.login_request ,name = "Login"),
     path('dashboard/',views.dashboard ,name = "Dashboard"),
-    path('products/',views.products ,name = "Products"),
+    path('products/',views.mod_products ,name = "Products"),
     path('orders/',views.dashboard ,name = "Orders"),
+    path('view_products/',views.view_products ,name = "View_Products"),
+    
 ]
-handler404 = 'main.views.error_page'
+handler404 = 'central.views.error_page'
