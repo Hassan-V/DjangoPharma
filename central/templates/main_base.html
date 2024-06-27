@@ -3,33 +3,41 @@
 
 <head>
   <meta charset="UTF-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abyssal Pharmacy</title>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      var prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (theme === 'dark' || (!theme && prefersDarkScheme)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
   {% load static %}
-  <link rel="icon" href="{% static 'img/icons/icon16x16.ico' %}" type="image/x-icon" />
   <link rel="icon" href="{% static 'img/icons/icon32x32.ico' %}" type="image/x-icon" />
-  <link rel="icon" href="{% static 'img/icons/icon96x96.ico' %}" type="image/x-icon" />
-  
   <link rel="stylesheet" href="{% static 'css/TailwindFinal.css' %}" />
   <link rel="stylesheet" href="{% static 'css/MainNavbar.css' %}" />
-
-  <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" /-->
-  <!--script src="https://cdn.tailwindcss.com"></script-->
-  <!--script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script-->
+  <meta name="description" content="Manage your pharmacy inventory efficiently with Abyssal Pharmacy's comprehensive solution. Track stock levels, manage suppliers, and streamline operations with ease." />
+  <meta name="keywords" content="pharmacy, inventory, management, suppliers, operations, stock tracking" />
+  <meta property="og:title" content="Abyssal Pharmacy" />
+  <meta property="og:description" content="Manage your pharmacy inventory efficiently with Abyssal Pharmacy's comprehensive solution." />
+  <meta property="og:image" content="{% static 'img/img_home.jpg' %}" />
+  <meta property="og:url" content="https://www.yourwebsite.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
 </head>
 
 <body class="bg-white dark:bg-gray-900 text-black dark:text-white">
-  
   {% include 'main_navbar.html' %}
+  {% include 'main_messages.html' %}
+  {% block content %} {% endblock %}
+
   <script src="{% static 'js/main.js' %}"></script>
-
-  {% include 'main_messages.html' %} {% block content %} {% endblock %}
-
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+  <script src="{% static 'js/main.bundle.js' %}"></script>
+  {% block javascript %} {% endblock %}
 
   {% include 'main_footer.html' %}
 </body>

@@ -5,14 +5,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from docserver import settings
 
-class Customer(models.Model):
-    name  : str  = models.CharField(max_length=255)
-    phone : int  = PhoneNumberField()
-    email : str  = models.EmailField(unique=True)
-
-    def __str__(self):
-        return self.name
+User = get_user_model()
 
 class Discount(models.Model):
     DISCOUNT_TYPES = (
@@ -89,43 +85,42 @@ class Product(models.Model):
     
 
 class Order(models.Model):
-    PAYMENT_STATUS_CHOICES = (
-        ('paid', 'Paid'),
+    STATUS_CHOICES = (
+        ('cart', 'Cart'),
         ('pending', 'Pending'),
+        ('paid', 'Paid'),
         ('failed', 'Failed'),
     )
 
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
-    date_time = models.DateTimeField()
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    date_time = models.DateTimeField(auto_now_add=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    tax_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)  # New field
-    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES)
+    tax_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='cart')
     discounts = models.ManyToManyField(Discount, related_name='orders')
 
     def calculate_subtotal(self):
-        return sum(item.subtotal_price for item in self.items.all())  # New method
+        return sum(item.subtotal_price for item in self.items.all())
 
     def calculate_total_price(self):
         subtotal = self.calculate_subtotal()
         for discount in self.discounts.all():
-            if discount.applicability:  # Check if discount is applicable
+            if discount.applicability:
                 subtotal = discount.apply(subtotal)
         total_price = subtotal * (1 + self.tax_rate / 100)
         return total_price
 
     def clean(self):
-        self.total_price = self.calculate_total_price()  # Calculate total price before validating
-        if self.total_price and self.total_price < 0:
-            raise ValidationError({
-                'total_price': _('Total price should be a positive number.')
-            })
+        self.total_price = self.calculate_total_price()
+        if self.total_price < 0:
+            raise ValidationError({'total_price': _('Total price should be a positive number.')})
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Order {self.id} by {self.customer.name}"
+        return f"Order {self.id} by {self.customer.name if self.customer else 'Anonymous'}"
     
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
@@ -163,3 +158,16 @@ class Adjustment(models.Model):
 
     def __str__(self):
         return f"Adjustment for {self.product.chemical_name}"
+    
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    session_key = models.CharField(max_length=255, null=True, blank=True)
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    
+    @property
+    def total_price(self):
+        return self.quantity * self.product.price

@@ -1,11 +1,14 @@
 from functools import wraps
-from django.shortcuts import render, redirect
+import json
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from central.forms.CustomUserCreationForm import CustomUserCreationForm
 from central.forms.CustomAuthenticationForm import CustomAuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Product
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST  # Add this line
+from .models import Cart, CartItem, Product
 
 # Create your views here.
 def homepage(request):
@@ -30,7 +33,7 @@ def register(request):
             username = form.cleaned_data.get('username')
             messages.success(request, f"New User Created, Welcome {username}!")
             login(request, user)
-            return redirect("main:HomePage")
+            return redirect("central:HomePage")
         else:
             for msg in form.error_messages:
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
@@ -45,11 +48,11 @@ def logout_request(request):
     messages.info(request, f"Logged Out Successfully")
     logout(request)
 
-    return redirect("main:HomePage")
+    return redirect("central:HomePage")
 
 def login_request(request):
     if request.user.is_authenticated:
-        return redirect("main:HomePage")
+        return redirect("central:HomePage")
     
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, request.POST)
@@ -61,7 +64,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"Logged In Successfully, Welcome Back {username}!")
-                return redirect("main:HomePage")
+                return redirect("central:HomePage")
             else:
                 messages.error(request, f"Invalid Username or Password")
         else:
@@ -74,20 +77,108 @@ def login_request(request):
         return render(request, "main_login.html", {"form": form})
 
 @staff_or_superuser_required
-def dashboard(request):
+def staff_dashboard(request):
     return render(request, 'main_dashboard.html')
 
 @staff_or_superuser_required
-def mod_products(request):
+def staff_products(request):
     return render(request, 'main_product.html')
 
 @staff_or_superuser_required
-def orders(request):
+def staff_orders(request):
     return render(request, 'main_order.html')
         
 def error_page(request, data):
     return render(request,"main_error.html", context={"data": data})
 
-def view_products(request):
-    products = Product.objects.all()  # Query all products from the database
+def products(request):
+    products = Product.objects.all() 
     return render(request, 'main_products.html', {'products': products})
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    return render(request, 'main_product_details.html', {'product': product})
+
+def cart_detail(request):
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+    else:
+        cart_id = request.session.get('cart_id', None)
+        if cart_id:
+            cart, created = Cart.objects.get_or_create(id=cart_id)
+        else:
+            cart = None  # No cart available
+    if cart:
+        items = CartItem.objects.filter(cart=cart)
+    else:
+        items = []
+    return render(request, 'main_cart.html', {'cart_items': items})
+
+
+def get_or_create_cart(request):
+    if request.user.is_authenticated:
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+    else:
+        cart_id = request.session.get('cart_id', None)
+        if cart_id:
+            cart, _ = Cart.objects.get_or_create(id=cart_id)
+        else:
+            cart = Cart.objects.create()
+            request.session['cart_id'] = cart.id
+    return cart
+
+@require_POST
+def add_to_cart_view(request, product_id, quantity=1):
+    product = get_object_or_404(Product, id=product_id)
+    cart = get_or_create_cart(request)
+
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    try:
+        quantity = int(quantity)
+    except ValueError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid quantity'})
+
+    if not created:
+        cart_item.quantity += quantity
+    else:
+        cart_item.quantity = quantity
+    cart_item.save()
+
+    return JsonResponse({'status': 'success'})
+
+@require_POST
+def remove_from_cart(request, product_id):
+    cart = get_or_create_cart(request)
+
+    if cart:
+        CartItem.objects.filter(cart=cart, product_id=product_id).delete()
+        print('Product removed from cart')
+    print('Product removed from cart')
+
+    return JsonResponse({'status': 'success'})
+
+@require_POST
+def update_cart_item_quantity_view(request, product_id):
+    try:
+        data = json.loads(request.body)
+        quantity = int(data.get('quantity', 1))
+    except ValueError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid quantity'})
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid JSON'})
+
+    cart = get_or_create_cart(request)
+
+    if cart:
+        cart_item = CartItem.objects.filter(cart=cart, product_id=product_id).first()
+        if cart_item:
+            cart_item.quantity = quantity
+            cart_item.save()
+            # Calculate the new total price using the total_price property
+            new_total_price = cart_item.total_price
+            # Return the new total price in the JsonResponse
+            return JsonResponse({'status': 'success', 'new_total_price': str(new_total_price)})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Cart item not found'})
+
+    return JsonResponse({'status': 'error', 'message': 'Cart not found'})

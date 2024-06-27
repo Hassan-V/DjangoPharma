@@ -1,3 +1,4 @@
+// postcss.config.js
 module.exports = {
     parser: require('postcss-scss'),
     plugins: [
@@ -9,8 +10,8 @@ module.exports = {
         require('@tailwindcss/line-clamp'),
     ],
     content: [
-        './main/templates/**/*.html',
-        './main/static/js/**/*.js',
+        './central/templates/**/*.html',
+        './central/static/js/**/*.js',
     ],
     theme: {
         extend: {},

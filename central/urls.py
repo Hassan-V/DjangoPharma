@@ -14,20 +14,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
+from django.urls import path
 from . import views
 
-app_name = "main"
+app_name = "central"
 
 urlpatterns = [
-    path('',views.homepage, name = "HomePage"),
-    path('register/',views.register ,name = "Register"),
-    path('logout/',views.logout_request ,name = "Logout"),
-    path('login/',views.login_request ,name = "Login"),
-    path('dashboard/',views.dashboard ,name = "Dashboard"),
-    path('products/',views.mod_products ,name = "Products"),
-    path('orders/',views.dashboard ,name = "Orders"),
-    path('view_products/',views.view_products ,name = "View_Products"),
-    
+    path('', views.homepage, name="HomePage"),
+    path('register/', views.register, name="Register"),
+    path('logout/', views.logout_request, name="Logout"),
+    path('login/', views.login_request, name="Login"),
+    path('staff-dashboard/', views.staff_dashboard, name="Staff-Dashboard"),
+    path('staff-products/', views.staff_products, name="Staff-Products"),
+    path('staff-orders/', views.staff_orders, name="Staff-Orders"),
+    path('products/', views.products, name="Product-Listing"),
+    path('product/<int:product_id>/', views.product_detail, name="Product_Detail"),
+    path('cart/', views.cart_detail, name="view-cart"),
+    path('cart/add/<int:product_id>/', views.add_to_cart_view, name='add-to-cart'),
+    path('remove_from_cart/<int:product_id>/', views.remove_from_cart, name='remove-from-cart'),
+    path('update_cart_item_quantity/<int:product_id>/', views.update_cart_item_quantity_view, name='update_cart_item_quantity'),
 ]
 handler404 = 'central.views.error_page'

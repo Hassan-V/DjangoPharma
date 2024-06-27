@@ -1,0 +1,25 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mx-auto mt-10">
+    <div class="flex flex-wrap md:flex-nowrap">
+        <div class="w-full md:w-1/2 p-4">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-auto object-cover rounded-lg shadow-md">
+            {% else %}
+            <img src="{{ MEDIA_URL }}product_images/default.webp" alt="default image" class="w-full h-auto object-cover rounded-lg shadow-md">
+            {% endif %}
+        </div>
+        <div class="w-full md:w-1/2 p-4">
+            <h2 class="text-2xl font-semibold">{{ product.chemical_name }}</h2>
+            <p class="mt-2"><strong>Category:</strong> {{ product.get_category_display }}</p>
+            <p class="mt-2"><strong>Description:</strong> {{ product.description }}</p>
+            <p class="mt-2"><strong>Price:</strong> ${{ product.price }}</p>
+            <p class="mt-2"><strong>Quantity Available:</strong> {{ product.quantity }}</p>
+            <p class="mt-2"><strong>Expiry Date:</strong> {{ product.expiry_date }}</p>
+            <p class="mt-2"><strong>Manufacturer:</strong> {{ product.manufacturer }}</p>
+            <p class="mt-2"><strong>Company Name:</strong> {{ product.company_name }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

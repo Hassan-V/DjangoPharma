@@ -7,3 +7,8 @@ package-lock.json
 node_modules
 django-stuff/
 django-brush/
+staticfiles/
+staticfiles/admin/
+staticfiles/css/
+staticfiles/js/
+staticfiles/img/
