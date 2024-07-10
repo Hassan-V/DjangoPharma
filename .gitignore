@@ -12,3 +12,5 @@ staticfiles/admin/
 staticfiles/css/
 staticfiles/js/
 staticfiles/img/
+.env
+db.sqlite3

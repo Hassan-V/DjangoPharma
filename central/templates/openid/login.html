@@ -1,0 +1,28 @@
+{% extends "openid/base.html" %}
+{% load i18n %}
+{% load allauth %}
+
+{% block head_title %}
+    OpenID {% translate "Sign In" %}
+{% endblock head_title %}
+
+{% block content %}
+    <div class="max-w-lg mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        {% element h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4" %}
+            OpenID {% trans 'Sign In' %}
+        {% endelement %}
+        {% url 'openid_login' as action_url %}
+        {% element form method="post" action=action_url class="space-y-4" %}
+            {% slot body %}
+                {% csrf_token %}
+                {% element fields form=form unlabeled=True %}
+                {% endelement %}
+            {% endslot %}
+            {% slot actions %}
+                {% element button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %}
+                    {% translate "Sign In" %}
+                {% endelement %}
+            {% endslot %}
+        {% endelement %}
+    </div>
+{% endblock content %}

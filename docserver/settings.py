@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
+load_dotenv(override=True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3rfj+n7vt$y%#ixj9ccs^kxh*7f824%x)^-ho3x$o)mtf(hbaz'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -105,9 +107,9 @@ INTERNAL_IPS = [
 ]
 
 TEMPLATES = [
-    {
+    {   
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,10 +131,19 @@ WSGI_APPLICATION = 'docserver.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'mssql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv("DATABASE_HOST") ,  # Set to your server's host name or IP address
+        'PORT': os.getenv("DATABASE_PORT"),  # Typically MS SQL Server uses port 1433
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',  # Make sure this driver is installed on your machine
+            'extra_params': 'TrustServerCertificate=yes;',  # Optional: for self-signed certificates
+        },
+    },
 }
+
 
 
 # Password validation
@@ -154,10 +165,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'client_id': 'your-client-id.apps.googleusercontent.com',
-        'secret': 'your-client-secret',
-    }
 }
 
 # Internationalization
@@ -179,8 +186,8 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesSto
 
 
 #SECURE_SSL_REDIRECT = True
-#SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # Default primary key field type

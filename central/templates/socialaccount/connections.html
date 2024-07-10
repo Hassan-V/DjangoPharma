@@ -1,0 +1,64 @@
+{% extends "socialaccount/base_manage.html" %}
+{% load i18n %}
+{% load allauth %}
+
+{% block head_title %}
+    {% trans "Account Connections" %}
+{% endblock head_title %}
+
+{% block content %}
+    <div class="max-w-lg mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        {% element h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4" %}
+            {% trans "Account Connections" %}
+        {% endelement %}
+
+        {% if form.accounts %}
+            {% element p class="mb-4 text-gray-700 dark:text-gray-300" %}
+                {% blocktrans %}You can sign in to your account using any of the following third-party accounts:{% endblocktrans %}
+            {% endelement %}
+            {% url 'socialaccount_connections' as action_url %}
+            {% element form form=form method="post" action=action_url class="space-y-4" %}
+                {% slot body %}
+                    {% csrf_token %}
+                    {% for acc in form.fields.account.choices %}
+                        {% with account=acc.0.instance.get_provider_account %}
+                            {% setvar radio_id %}
+                                id_account_{{ account.account.pk }}
+                            {% endsetvar %}
+                            {% setvar tags %}
+                                socialaccount,{{ account.account.provider }}
+                            {% endsetvar %}
+                            <div class="flex items-center space-x-2">
+                                {% element field id=radio_id type="radio" name="account" value=account.account.pk class="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out" %}
+                                    {% slot label class="text-gray-900 dark:text-gray-300" %}
+                                        {{ account }}
+                                        {% element badge tags=tags class="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-300 px-2 py-1 rounded" %}
+                                            {{ account.get_brand.name }}
+                                        {% endelement %}
+                                    {% endslot %}
+                                {% endelement %}
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                {% endslot %}
+                {% slot actions %}
+                    {% element button tags="delete,danger" type="submit" class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %}
+                        {% trans 'Remove' %}
+                    {% endelement %}
+                {% endslot %}
+            {% endelement %}
+        {% else %}
+            {% element p class="mb-4 text-gray-700 dark:text-gray-300" %}
+                {% trans 'You currently have no third-party accounts connected to this account.' %}
+            {% endelement %}
+        {% endif %}
+
+        {% element h2 class="text-xl font-semibold text-gray-900 dark:text-white mt-6 mb-4" %}
+            {% trans 'Add a Third-Party Account' %}
+        {% endelement %}
+        <div class="space-y-4">
+            {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+            {% include "socialaccount/snippets/login_extra.html" %}
+        </div>
+    </div>
+{% endblock content %}

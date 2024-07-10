@@ -1,0 +1,49 @@
+{% extends "socialaccount/base_entrance.html" %}
+{% load i18n %}
+{% load allauth %}
+{% load class-related-tags %} <!-- Make sure to load the template tag file where 'add_class' is defined -->
+
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+
+{% block content %}
+<div class="container mx-auto p-4 max-w-md mb-4">
+    {% if process == "connect" %}
+        <h1 class="text-center text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+            {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+        </h1>
+        <p class=" text-center mb-4 text-gray-700 dark:text-gray-300 ">
+            {% blocktrans with provider.name as provider %}You are about to connect a new third-party account from {{ provider }}.{% endblocktrans %}
+        </p>
+    {% else %}
+        <h1 class="text-center text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+            <p> Please Sign Via Email </p>
+    {% endif %}
+    <form method="post" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="id_login" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{% trans "Username" %}</label>
+            <input type="text" name="login" id="id_login" placeholder="{% trans "Username" %}"
+                class="input-class block w-full mt-1 py-1 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500 text-sm">
+        </div>
+        <div class="mb-4">
+            <label for="id_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{% trans "Password" %}</label>
+            <input type="password" name="password" id="id_password" placeholder="{% trans "Password" %}"
+            class="input-class block w-full mt-1 py-1 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500 text-sm">
+        </div>
+        <button type="submit" class="w-full py-1 px-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700 text-sm">
+            {% trans "Continue" %}
+        </button>
+    </form>
+    {% if SOCIALACCOUNT_ENABLED %}
+        <div class="social-login-options mt-4">
+            <hr class="my-4 border-gray-300 dark:border-gray-700">
+            <h2 class="text-center text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                {% trans "Or sign in with" %}
+            </h2>
+            {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

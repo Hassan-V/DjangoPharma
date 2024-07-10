@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load allauth %}
+{% load socialaccount %}
+{% load static %}
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+    {% if not SOCIALACCOUNT_ONLY %}
+        <div class="my-4 border-t border-gray-300"></div>
+    {% endif %}
+    <div class="flex flex-wrap justify-center gap-4">
+        {% for provider in socialaccount_providers %}
+            {% if provider.id == "facebook" %}
+                <a href="{% provider_login_url provider.id process="login" %}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700">
+                    <img src="{% static 'img/svg/Facebook.svg' %}" alt="Facebook" class="w-6 h-6 mr-2" style="display: inline;">
+                    {% translate "Login with Facebook" %}
+                </a>
+            {% elif provider.id == "microsoft" %}
+                <a href="{% provider_login_url provider.id process="login" %}" class="inline-flex items-center px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-900">
+                    <img src="{% static 'img/svg/Microsoft.svg' %}" alt="Microsoft" class="w-6 h-6 mr-2" style="display: inline;">
+                    {% translate "Login with Microsoft" %}
+                </a>
+            {% elif provider.id == "google" %}
+                <a href="{% provider_login_url provider.id process="login" %}" class="inline-flex items-center px-4 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600">
+                    <img src="{% static 'img/svg/Google-non.svg' %}" alt="Google" class="w-6 h-6 mr-2" style="display: inline;">
+                    {% translate "Login with Google" %}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

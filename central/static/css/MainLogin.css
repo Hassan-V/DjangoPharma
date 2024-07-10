@@ -1,0 +1,13 @@
+.input-class {
+    /* Your custom input field styles */
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.checkbox-class {
+    /* Your custom checkbox styles */
+    margin-top: 8px;
+}
+
+/* Add additional styles as needed */

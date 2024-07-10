@@ -18,11 +18,11 @@ function handleRemoveFromCart(e) {
 }
 
 // Function to handle quantity update
-function handleQuantityChange(e) {
+const handleQuantityChange = debounce(function(e) {
     const productId = e.target.closest('form').querySelector('input[name="product-id"]').value;
     const quantity = e.target.value;
     updateCartQuantity(productId, quantity);
-}
+}, 500);
 
 // Attach event listeners to Remove links
 document.querySelectorAll('a').forEach(item => {
@@ -52,6 +52,18 @@ document.querySelectorAll('input[type="range"]').forEach(item => {
                     console.log('Item removed');
                 }
             });
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
 
     function updateCartQuantity(productId, quantity) {
@@ -85,8 +97,6 @@ document.querySelectorAll('input[type="range"]').forEach(item => {
     }
     
     function calculatePriceOnClientSide(productId, quantity) {
-        // Simplified client-side price calculation (e.g., quantity * unit price)
-        // Note: This is a placeholder. Actual implementation would depend on available data
         const price = quantity * getProductUnitPrice(productId);
         return parseFloat(price.toFixed(2));
     }
