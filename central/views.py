@@ -7,7 +7,7 @@ from central.forms.CustomAuthenticationForm import CustomAuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST  # Add this line
+from django.views.decorators.http import require_POST 
 from .models import Cart, CartItem, Product
 
 # Create your views here.
@@ -37,10 +37,9 @@ def register(request):
         else:
             for msg in form.error_messages:
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
-            # Add this line to return a response when the form is not valid
             return render(request, 'main_register.html', {'form': form})
     else:
-        form = CustomUserCreationForm()  # Create an instance of the form
+        form = CustomUserCreationForm()  
         return render(request, 'main_register.html', {'form': form})
 
 
@@ -162,10 +161,10 @@ def update_cart_item_quantity_view(request, product_id):
     try:
         data = json.loads(request.body)
         quantity = int(data.get('quantity', 1))
-    except ValueError:
-        return JsonResponse({'status': 'error', 'message': 'Invalid quantity'})
     except json.JSONDecodeError:
         return JsonResponse({'status': 'error', 'message': 'Invalid JSON'})
+    except ValueError:
+        return JsonResponse({'status': 'error', 'message': 'Invalid quantity'})
 
     cart = get_or_create_cart(request)
 
@@ -174,9 +173,7 @@ def update_cart_item_quantity_view(request, product_id):
         if cart_item:
             cart_item.quantity = quantity
             cart_item.save()
-            # Calculate the new total price using the total_price property
             new_total_price = cart_item.total_price
-            # Return the new total price in the JsonResponse
             return JsonResponse({'status': 'success', 'new_total_price': str(new_total_price)})
         else:
             return JsonResponse({'status': 'error', 'message': 'Cart item not found'})

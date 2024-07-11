@@ -15,49 +15,22 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '100.73.131.250','*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
 # Only set these to True if you are using HTTPS, even in development
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
-# SECURE_SSL_REDIRECT = False
-
-TINYMCE_DEFAULT_CONFIG = {
-    'height': 360,
-    'width': 800,
-    'cleanup_on_startup': True,
-    'custom_undo_redo_levels': 20,
-    'selector': 'textarea',
-    'theme': 'modern', 
-    'plugins': '''
-        textcolor save autosave lists link image charmap print preview anchor
-        searchreplace visualblocks code fullscreen insertdatetime media table
-        contextmenu paste
-    ''',
-    'toolbar': '''
-        undo redo | formatselect | bold italic backcolor | 
-        alignleft aligncenter alignright alignjustify | 
-        bullist numlist outdent indent | removeformat | 
-        table | code | preview
-    ''',
-}
-
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -66,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'central.apps.MainConfig',
-    'tinymce',
     'corsheaders',
     'django.contrib.sites',
     'allauth',
@@ -75,7 +47,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.microsoft',
     'allauth.socialaccount.providers.facebook',
-    #'cart',
 ]
 
 MIDDLEWARE = [
@@ -94,13 +65,9 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:9000",  
-    "http://192.168.0.3:8000",
 ]
 
-
 ROOT_URLCONF = 'docserver.urls'
-
-TAILWIND_APP_NAME = 'pharmatheme'
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -125,7 +92,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'docserver.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -143,8 +109,6 @@ DATABASES = {
         },
     },
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -167,9 +131,6 @@ AUTH_PASSWORD_VALIDATORS = [
 SOCIALACCOUNT_PROVIDERS = {
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -180,19 +141,8 @@ USE_TZ = True
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-
-#SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
@@ -200,7 +150,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = 2
+SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
