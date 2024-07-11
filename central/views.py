@@ -1,10 +1,10 @@
 from functools import wraps
 import json
-from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from central.forms.CustomUserCreationForm import CustomUserCreationForm
-from central.forms.CustomAuthenticationForm import CustomAuthenticationForm
-from django.contrib.auth import login, logout, authenticate
+from django.urls import reverse
+from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST 
@@ -25,6 +25,7 @@ def staff_or_superuser_required(view_func):
             return error_page(request, "Invalid User Permissions!")
     return _wrapped_view
 
+'''
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -41,6 +42,11 @@ def register(request):
     else:
         form = CustomUserCreationForm()  
         return render(request, 'main_register.html', {'form': form})
+'''
+
+def register(request):
+    redirect_to = request.GET.get('next', '/accounts/signup/')
+    return redirect(redirect_to)
 
 
 def logout_request(request):
@@ -49,6 +55,27 @@ def logout_request(request):
 
     return redirect("central:HomePage")
 
+def contact_request(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        send_mail(
+            f"Contact Form Submission from {name}",
+            message,
+            email,
+            ['rashidalihassanhp@gmail.com'],  # Replace with your email
+            fail_silently=False,
+        )
+
+        return HttpResponseRedirect(reverse('Contact'))
+
+    return render(request, 'main_contact.html')
+
+
+
+"""
 def login_request(request):
     if request.user.is_authenticated:
         return redirect("central:HomePage")
@@ -74,6 +101,10 @@ def login_request(request):
     else:
         form = CustomAuthenticationForm()
         return render(request, "main_login.html", {"form": form})
+"""
+def login_request(request):
+    redirect_to = request.GET.get('next', '/accounts/login/')
+    return redirect(redirect_to)
 
 @staff_or_superuser_required
 def staff_dashboard(request):
@@ -109,9 +140,10 @@ def cart_detail(request):
             cart = None  # No cart available
     if cart:
         items = CartItem.objects.filter(cart=cart)
+        cart_total = sum(item.product.price * item.quantity for item in items)
     else:
         items = []
-    return render(request, 'main_cart.html', {'cart_items': items})
+    return render(request, 'main_cart.html', {'cart_items': items, "cart_total": cart_total})
 
 
 def get_or_create_cart(request):
@@ -127,16 +159,13 @@ def get_or_create_cart(request):
     return cart
 
 @require_POST
-def add_to_cart_view(request, product_id, quantity=1):
+def add_to_cart_view(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = get_or_create_cart(request)
+    data = json.loads(request.body)
+    quantity = data.get('quantity', 1)
 
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    try:
-        quantity = int(quantity)
-    except ValueError:
-        return JsonResponse({'status': 'error', 'message': 'Invalid quantity'})
-
     if not created:
         cart_item.quantity += quantity
     else:
@@ -174,7 +203,8 @@ def update_cart_item_quantity_view(request, product_id):
             cart_item.quantity = quantity
             cart_item.save()
             new_total_price = cart_item.total_price
-            return JsonResponse({'status': 'success', 'new_total_price': str(new_total_price)})
+            cart_total = sum(item.product.price * item.quantity for item in CartItem.objects.filter(cart=cart))
+            return JsonResponse({'status': 'success', 'new_total_price': str(new_total_price), 'cart_total': cart_total})
         else:
             return JsonResponse({'status': 'error', 'message': 'Cart item not found'})
 

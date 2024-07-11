@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,7 +20,7 @@
   <link rel="icon" href="{% static 'img/icons/icon32x32.ico' %}" type="image/x-icon" />
   <link rel="stylesheet" href="{% static 'css/TailwindFinal.css' %}" />
   <link rel="stylesheet" href="{% static 'css/MainNavbar.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/MainFooter.css' %}" />
+  
   <meta name="description" content="Manage your pharmacy inventory efficiently with Abyssal Pharmacy's comprehensive solution. Track stock levels, manage suppliers, and streamline operations with ease." />
   <meta name="keywords" content="pharmacy, inventory, management, suppliers, operations, stock tracking" />
   <meta property="og:title" content="Abyssal Pharmacy" />
@@ -30,19 +29,17 @@
   <meta property="og:url" content="https://www.yourwebsite.com/" />
   <meta name="twitter:card" content="summary_large_image" />
 </head>
-
-<body class="bg-white dark:bg-gray-900 text-black dark:text-white">
-  {% include 'main_navbar.html' %}
-  {% include 'main_messages.html' %}
-  {% block content %} {% endblock %}
-
+<body class="bg-white dark:bg-gray-900 text-black dark:text-white min-h-screen flex flex-col">
+  <div class="content-wrapper flex-grow">
+    {% include 'main_navbar.html' %}
+    {% include 'main_messages.html' %}
+    {% block content %} {% endblock %}
+  </div>
+  <div class="footer bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+    {% include 'main_footer.html' %}
+  </div>
   <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/main.bundle.js' %}"></script>
   {% block javascript %} {% endblock %}
-
-  <div class="footer bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-    {% include 'main_footer.html' %}
-</div>
 </body>
-
 </html>

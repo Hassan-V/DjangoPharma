@@ -15,22 +15,49 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '100.73.131.250','*']
 
 # Only set these to True if you are using HTTPS, even in development
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
+# SECURE_SSL_REDIRECT = False
+
 
 # Application definition
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': 800,
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'selector': 'textarea',
+    'theme': 'modern',  # You can choose a different theme if you prefer.
+    'plugins': '''
+        textcolor save autosave lists link image charmap print preview anchor
+        searchreplace visualblocks code fullscreen insertdatetime media table
+        contextmenu paste
+    ''',
+    'toolbar': '''
+        undo redo | formatselect | bold italic backcolor | 
+        alignleft aligncenter alignright alignjustify | 
+        bullist numlist outdent indent | removeformat | 
+        table | code | preview
+    ''',
+}
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,6 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'central.apps.MainConfig',
+    'tinymce',
     'corsheaders',
     'django.contrib.sites',
     'allauth',
@@ -47,6 +75,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.microsoft',
     'allauth.socialaccount.providers.facebook',
+    #'cart',
 ]
 
 MIDDLEWARE = [
@@ -65,9 +94,11 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:9000",  
+    
 ]
 
 ROOT_URLCONF = 'docserver.urls'
+
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -92,6 +123,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'docserver.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -109,6 +141,8 @@ DATABASES = {
         },
     },
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -129,7 +163,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'client_id': '677324147223-16fral98cpq8855gr4l98bj5rh5qf4f4.apps.googleusercontent.com',
+        'secret': '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',
+    }
 }
+
+# Internationalization
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -141,8 +182,22 @@ USE_TZ = True
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Correct SMTP server for Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # Your email address
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # Your email password
+
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
@@ -150,7 +205,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = 1
+SITE_ID = 2
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

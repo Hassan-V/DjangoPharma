@@ -2,20 +2,19 @@
 {% load static %}
 {% load math_tag %}
 
-
 {% block content %}
 <div class="container mx-auto mt-10">
     <div class="shadow-md my-10">
-        <div class="bg-white px-10 py-10">
+        <div class="bg-white dark:bg-gray-800 px-10 py-10">
             <div class="flex justify-between border-b pb-8">
-                <h1 class="font-semibold text-3xl">Shopping Cart</h1>
-                <h2 class="font-semibold text-2xl">{{ cart_items|length }} Items</h2>
+                <h1 class="font-semibold text-3xl text-gray-800 dark:text-gray-200">Shopping Cart</h1>
+                <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200">{{ cart_items|length }} Items</h2>
             </div>
             <div class="hidden md:grid grid-cols-4 gap-4 mt-10 mb-5 text-xs uppercase">
-                <h3 class="font-semibold text-gray-600">Product Details</h3>
-                <h3 class="font-semibold text-gray-600 text-center">Quantity</h3>
-                <h3 class="font-semibold text-gray-600 text-center">Price</h3>
-                <h3 class="font-semibold text-gray-600 text-center">Total</h3>
+                <h3 class="font-semibold text-gray-600 dark:text-gray-400">Product Details</h3>
+                <h3 class="font-semibold text-gray-600 dark:text-gray-400 text-center">Quantity</h3>
+                <h3 class="font-semibold text-gray-600 dark:text-gray-400 text-center">Price</h3>
+                <h3 class="font-semibold text-gray-600 dark:text-gray-400 text-center">Total</h3>
             </div>
             {% for item in cart_items %}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center mb-5 border-b pb-5">
@@ -25,34 +24,33 @@
                         <img class="w-full h-full object-cover" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
                     </div>
                     <div class="ml-4 flex flex-col justify-between">
-                        <span class="font-bold text-sm truncate">{{ item.product.name }}</span>
-                        <span class="text-gray-500 text-xs">{{ item.product.description|truncatewords:10 }}</span>
-                        <a href="#" data-product-id="{{ item.product.id }}" onclick="removeFromCart({{ item.product.id }})" class="text-xs text-red-500 hover:underline mt-2">Remove</a>
+                        <span class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">{{ item.product.name }}</span>
+                        <span class="text-gray-500 dark:text-gray-400 text-xs">{{ item.product.description|truncatewords:10 }}</span>
+                        <a id='prevent-default' href="#" data-product-id="{{ item.product.id }}" onclick="removeFromCart({{ item.product.id }})" class="text-xs text-red-500 hover:underline mt-2">Remove</a>
                     </div>
                 </div>
                 <div class="text-center md:col-span-1">
                     <form method="post" onsubmit="updateCartQuantity(event, {{ item.product.id }})">
                         {% csrf_token %}
                         <input type="hidden" name="product-id" value="{{ item.product.id }}">
-                        <input type="range" name="quantity" min="1" max="10" value="{{ item.quantity }}" oninput="this.nextElementSibling.value = this.value">
-                        <output>{{ item.quantity }}</output>
+                        <input type="range" name="quantity" min="1" max="10" value="{{ item.quantity }}" oninput="this.nextElementSibling.value = this.value" class="dark:bg-gray-700 dark:text-gray-200">
+                        <output class="text-gray-800 dark:text-gray-200">{{ item.quantity }}</output>
                     </form>
                 </div>
-                <div class="text-center md:col-span-1 price-per-unit" data-product-id="{{ item.product.id }}" data-price-per-unit="{{ item.product.price }}">
+                <div class="text-center md:col-span-1 price-per-unit text-gray-800 dark:text-gray-200" data-product-id="{{ item.product.id }}" data-price-per-unit="{{ item.product.price }}">
                     ${{ item.product.price }}
                 </div>
-                <div class="text-center md:col-span-1 total-item-price" data-product-id="{{ item.product.id }}">
+                <div class="text-center md:col-span-1 total-item-price text-gray-800 dark:text-gray-200" data-product-id="{{ item.product.id }}">
                     ${{ item.quantity|multiply:item.product.price }}
                 </div>
-                
             </div>
             {% endfor %}
         </div>
-        <div class="bg-gray-100 p-8 mt-10 md:mt-0">
-            <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
+        <div class="bg-gray-100 dark:bg-gray-900 p-8 mt-10 md:mt-0">
+            <h1 class="font-semibold text-2xl border-b pb-8 text-gray-800 dark:text-gray-200">Order Summary</h1>
             <div class="flex justify-between mt-10 mb-5">
-                <span class="font-semibold text-sm uppercase">Items {{ cart_items|length }}</span>
-                <span class="font-semibold text-sm">${{ cart_total }}</span>
+                <span class="font-semibold text-sm uppercase text-gray-800 dark:text-gray-200">Items {{ cart_items|length }}</span>
+                <span class="font-semibold text-sm text-gray-800 dark:text-gray-200 cart-total">${{ cart_total }}</span>
             </div>
             <div class="py-10">
                 <button class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold py-3 w-full uppercase">Checkout</button>
@@ -61,7 +59,7 @@
     </div>
 </div>
 {% endblock %}
+
 {% block javascript %}
 <script src="{% static 'js/cart.js' %}"></script>
-
 {% endblock %}
