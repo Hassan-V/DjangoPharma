@@ -1,0 +1,36 @@
+.menu-item {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #3182CE; /* Accent color for text */
+}
+
+.menu-item:hover {
+    background-color: #E2E8F0; /* Light background on hover */
+}
+
+.menu-item.active {
+    background-color: #ffffff; /* White background when active */
+    border-bottom: 2px solid #3182CE; /* Accent color underline */
+}
+
+.dark .menu-item {
+    color: #63B3ED; /* Adjusted text color for dark theme */
+}
+
+.dark .menu-item.active {
+    background-color: #2D3748; /* Dark background when active */
+    border-bottom-color: #63B3ED; /* Accent color underline for dark theme */
+}
+/* Ensure footer sticks to the bottom */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}

@@ -1,0 +1,109 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block head_title %}{% endblock %} - Abyssal Pharmacy</title>
+    <script>
+        (function() {
+            var theme = localStorage.getItem('theme');
+            var prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (theme === 'dark' || (!theme && prefersDarkScheme)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+    {% load static %}
+    {% block css %}
+    {% endblock %}
+    <link rel="icon" href="{% static 'img/icons/icon32x32.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/TailwindFinal.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/MainNavbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/allauthbase.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="description" content="Manage your pharmacy inventory efficiently with Abyssal Pharmacy's comprehensive solution. Track stock levels, manage suppliers, and streamline operations with ease." />
+    <meta name="keywords" content="pharmacy, inventory, management, suppliers, operations, stock tracking" />
+    <meta property="og:title" content="Abyssal Pharmacy" />
+    <meta property="og:description" content="Manage your pharmacy inventory efficiently with Abyssal Pharmacy's comprehensive solution." />
+    <meta property="og:image" content="{% static 'img/img_home.jpg' %}" />
+    <meta property="og:url" content="https:127.0.0.1/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+</head>
+<body class="bg-white dark:bg-gray-900 text-black dark:text-white">
+    {% include 'main_navbar.html' %}
+    {% include 'main_messages.html' %}
+    <div class="content">
+        {% block body %}
+        <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md">
+            <div class="flex items-center justify-center h-full mb-4">
+                <strong class="text-xl font-semibold text-gray-900 dark:text-white">{% trans "Welcome To Abyssal" %}</strong>
+            </div>
+            <ul class="space-y-2">
+                {% if user.is_authenticated %}
+                    {% url 'account_email' as email_url %}
+                    {% if email_url %}
+                        <li>
+                            <a href="{{ email_url }}" class="menu-item {% if request.path == email_url %}active{% endif %}">{% trans "Change Email" %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'account_change_password' as change_password_url %}
+                    {% if change_password_url %}
+                        <li>
+                            <a href="{{ change_password_url }}" class="menu-item {% if request.path == change_password_url %}active{% endif %}">{% trans "Change Password" %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'mfa_index' as mfa_url %}
+                    {% if mfa_url %}
+                        <li>
+                            <a href="{{ mfa_url }}" class="menu-item {% if request.path == mfa_url %}active{% endif %}">{% trans "Two-Factor Authentication" %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'usersessions_list' as usersessions_list_url %}
+                    {% if usersessions_list_url %}
+                        <li>
+                            <a href="{{ usersessions_list_url }}" class="menu-item {% if request.path == usersessions_list_url %}active{% endif %}">{% trans "Sessions" %}</a>
+                        </li>
+                    {% endif %}
+                    {% url 'account_logout' as logout_url %}
+                    {% if logout_url %}
+                        <li>
+                            <a href="{{ logout_url }}" class="menu-item {% if request.path == logout_url %}active{% endif %}">{% trans "Sign Out" %}</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    {% url 'account_login' as login_url %}
+                    {% url 'account_signup' as signup_url %}
+                    <div class="flex justify-center border-b-2">
+                        <a href="{{ login_url }}" class="menu-item {% if request.path == login_url %}active{% endif %}">
+                            {% trans "Sign In" %}
+                        </a>
+                        {% if signup_url %}
+                            <a href="{{ signup_url }}" class="menu-item {% if request.path == signup_url %}active{% endif %}">
+                                {% trans "Sign Up" %}
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </ul>
+        </div>
+
+        {% block content %}
+        {% endblock content %}
+        {% endblock body %}
+    </div>
+    <div class="footer bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+        {% include 'main_footer.html' %}
+    </div>
+    
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/main.bundle.js' %}"></script>
+    {% block javascript %} {% endblock %}
+    {% block extra_body %}
+    {% endblock extra_body %}
+</body>
+</html>

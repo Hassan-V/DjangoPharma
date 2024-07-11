@@ -1,0 +1,61 @@
+{% extends "account/base_entrance.html" %}
+{% load allauth i18n %}
+{% load class-related-tags %} <!-- Make sure to load the template tag file where 'add_class' is defined -->
+
+{% block head_title %}
+    {% trans "Signup" %}
+{% endblock head_title %}
+
+{% block content %}
+<div class="container mx-auto p-4 max-w-md mb-4">
+    <h1 class="text-center text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+        {% trans "Sign Up" %}
+    </h1>
+    {% setvar link %}
+        <a href="{{ login_url }}" class="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500">
+        {% endsetvar %}
+        {% setvar end_link %}
+        </a>
+    {% endsetvar %}
+    <p class="text-center mb-4 text-gray-700 dark:text-gray-300">
+        {% blocktranslate %}Already have an account? Then please {{ link }}sign in{{ end_link }}.{% endblocktranslate %}
+    </p>
+    {% if not SOCIALACCOUNT_ONLY %}
+        {% url 'account_signup' as action_url %}
+        <form method="post" action="{{ action_url }}" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            {% csrf_token %}
+            <div class="space-y-4">
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ field.label_tag }}</label>
+                        {% if field.field.widget.input_type == "text" or field.field.widget.input_type == "email" %}
+                            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="{{ field.label }}"
+                                class="input-class block w-full mt-1 py-1 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500 text-sm">
+                        {% elif field.field.widget.input_type == "password" %}
+                            <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder="{{ field.label }}"
+                                class="input-class block w-full mt-1 py-1 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500 text-sm">
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {{ redirect_field }}
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="w-full py-1 px-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700 text-sm">
+                    {% trans "Sign Up" %}
+                </button>
+            </div>
+        </form>
+    {% endif %}
+    {% if SOCIALACCOUNT_ENABLED %}
+        <div class="social-login-options mt-4">
+            <hr class="my-4 border-gray-300 dark:border-gray-700">
+            <h2 class="text-center text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                {% trans "Or sign up with" %}
+            </h2>
+            {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

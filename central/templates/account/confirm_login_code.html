@@ -1,0 +1,44 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load allauth account %}
+
+{% block head_title %}
+    {% translate "Sign In" %}
+{% endblock head_title %}
+
+{% block content %}
+<div class="container mx-auto p-4 max-w-md">
+    <h1 class="text-center text-2xl font-semibold mb-4">
+        {% translate "Enter Sign-In Code" %}
+    </h1>
+    {% setvar email_link %}
+        <a href="mailto:{{ email }}" class="text-blue-500 hover:underline">{{ email }}</a>
+    {% endsetvar %}
+    <p class="text-center mb-4">
+        {% blocktranslate %}We’ve sent a code to {{ email_link }}. The code expires shortly, so please enter it soon.{% endblocktranslate %}
+    </p>
+    {% url 'account_confirm_login_code' as login_url %}
+    <form method="post" action="{{ login_url }}" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        {% csrf_token %}
+        <div class="mb-4">
+            {{ form.non_field_errors }}
+            {{ form.errors.as_ul }}
+        </div>
+        <div class="mb-4">
+            {{ form.code.label_tag }}
+            {{ form.code }}
+        </div>
+        {{ redirect_field }}
+        <button type="submit" class="btn btn-primary w-full mt-4">
+            {% translate "Sign In" %}
+        </button>
+    </form>
+    <hr class="my-4">
+    <h2 class="text-center text-lg font-semibold">
+        {% url 'account_login' as login_url %}
+        <a href="{{ login_url }}" class="text-blue-500 hover:underline">
+            {% translate "Other sign-in options" %}
+        </a>
+    </h2>
+</div>
+{% endblock content %}

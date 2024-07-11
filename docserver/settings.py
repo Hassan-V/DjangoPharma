@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
+load_dotenv(override=True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3rfj+n7vt$y%#ixj9ccs^kxh*7f824%x)^-ho3x$o)mtf(hbaz'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +34,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '100.73.131.250','*']
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 # SECURE_SSL_REDIRECT = False
+
+
+# Application definition
 
 TINYMCE_DEFAULT_CONFIG = {
     'height': 360,
@@ -52,9 +58,6 @@ TINYMCE_DEFAULT_CONFIG = {
     ''',
 }
 
-
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,7 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
+    'central.apps.MainConfig',
     'tinymce',
     'corsheaders',
     'django.contrib.sites',
@@ -72,6 +75,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.microsoft',
     'allauth.socialaccount.providers.facebook',
+    #'cart',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +83,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  # Add this line
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -89,23 +93,21 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
-    "http://127.0.0.1:9000",  # Add your development server addresses
-    "http://192.168.0.3:8000",  # Add your specific addresses
+    "http://127.0.0.1:9000",  
+    
 ]
-
 
 ROOT_URLCONF = 'docserver.urls'
 
-TAILWIND_APP_NAME = 'pharmatheme'
 
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
 TEMPLATES = [
-    {
+    {   
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -113,6 +115,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -126,10 +129,19 @@ WSGI_APPLICATION = 'docserver.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'mssql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv("DATABASE_HOST"),
+        'PORT': os.getenv("DATABASE_PORT"),
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'TrustServerCertificate=yes;',
+        },
+    },
 }
+
 
 
 # Password validation
@@ -152,8 +164,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'client_id': 'your-client-id.apps.googleusercontent.com',
-        'secret': 'your-client-secret',
+        'client_id': '677324147223-16fral98cpq8855gr4l98bj5rh5qf4f4.apps.googleusercontent.com',
+        'secret': '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',
     }
 }
 
@@ -170,17 +182,18 @@ USE_TZ = True
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Correct SMTP server for Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # Your email address
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # Your email password
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-#SECURE_SSL_REDIRECT = True
-#SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -195,5 +208,12 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 2
 
 LOGIN_REDIRECT_URL = '/'
-# Optionally, specify a URL to redirect to on logout.
 LOGOUT_REDIRECT_URL = '/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+#APPEND_SLASH=False

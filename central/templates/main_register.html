@@ -1,0 +1,54 @@
+{% extends 'main_base.html' %} {% load static %} {% block content %}
+<div
+  class="bg-gray-900 min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8"
+>
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <h2 class="text-3xl font-extrabold text-white text-center">Register</h2>
+      <form action="#" method="POST" class="mt-6 space-y-6">
+        {% csrf_token %}
+        <div class="relative">
+          <label
+            for="{{ form.username.id_for_label }}"
+            class="block text-white text-sm font-medium"
+            >Username</label
+          >
+          {{ form.username }}
+        </div>
+        <div class="relative">
+          <label
+            for="{{ form.email.id_for_label }}"
+            class="block text-white text-sm font-medium"
+            >Email</label
+          >
+          {{ form.email }}
+        </div>
+        <div class="relative">
+          <label
+            for="{{ form.password1.id_for_label }}"
+            class="block text-white text-sm font-medium"
+            >Password</label
+          >
+          {{ form.password1 }}
+        </div>
+        <div class="relative">
+          <label
+            for="{{ form.password2.id_for_label }}"
+            class="block text-white text-sm font-medium"
+            >Confirm Password</label
+          >
+          {{ form.password2 }}
+        </div>
+        <div>
+          <button
+            type="submit"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

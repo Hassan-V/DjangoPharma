@@ -7,5 +7,15 @@ package-lock.json
 node_modules
 django-stuff/
 django-brush/
+staticfiles/
+staticfiles/admin/
+staticfiles/css/
+staticfiles/js/
+staticfiles/img/
+.env
+db.sqlite3
+testenv/
+sample.py
+temp.py
 comms.txt
-PhNode/
+media/

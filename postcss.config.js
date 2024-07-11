@@ -1,3 +1,4 @@
+// postcss.config.js
 module.exports = {
     parser: require('postcss-scss'),
     plugins: [
@@ -5,12 +6,12 @@ module.exports = {
         require('autoprefixer'),
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
-        require('@tailwindcss/aspect-ratio'), // updated line
+        require('@tailwindcss/aspect-ratio'),
         require('@tailwindcss/line-clamp'),
     ],
     content: [
-        './main/templates/**/*.html',
-        './main/static/js/**/*.js',
+        './central/templates/**/*.html',
+        './central/static/js/**/*.js',
     ],
     theme: {
         extend: {},
