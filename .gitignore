@@ -15,3 +15,6 @@ staticfiles/img/
 .env
 db.sqlite3
 testenv/
+sample.py
+temp.py
+comms.txt

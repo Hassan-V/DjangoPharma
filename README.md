@@ -37,6 +37,22 @@ bash
 
     npm install
 
+### Setup Envirnment Variables for Database:
+
+Create a file named .env in the project root and add the following lines. Remove the angle brackets (<>) when configuring the variables.
+
+For MS SQL Server (set as default):
+    DATABASE_NAME=<Name of the Database>
+    DATABASE_USER=<Username of the database user>
+    DATABASE_PASSWORD=<Password for the aforementioned user>
+    DATABASE_HOST=<IP / Domain / URL of Database Host>
+    DATABASE_PORT=<Port of the Database Server>
+
+for any other db you must change the ENGINE variable in the settings. py accordingly and configure the envirnment variables accordingly
+refer to the official documentation for more information
+    
+    https://docs.djangoproject.com/en/5.0/ref/databases/
+
 ### Run Django migrations and collect static files:
 
     python3 manage.py makemigrations

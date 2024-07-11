@@ -17,4 +17,4 @@ admin.site.register(Adjustment)
 admin.site.register(Discount)
 admin.site.register(Cart)
 admin.site.register(CartItem)
-#shtoje kete
+#Shto Më shumë 
