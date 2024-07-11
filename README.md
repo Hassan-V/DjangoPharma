@@ -42,6 +42,7 @@ bash
 Create a file named .env in the project root and add the following lines. Remove the angle brackets (<>) when configuring the variables.
 
 For MS SQL Server (set as default):
+
     DATABASE_NAME=<Name of the Database>
     DATABASE_USER=<Username of the database user>
     DATABASE_PASSWORD=<Password for the aforementioned user>
