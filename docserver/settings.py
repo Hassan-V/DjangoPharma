@@ -135,11 +135,11 @@ DATABASES = {
         'NAME': os.getenv('DATABASE_NAME'),
         'USER': os.getenv('DATABASE_USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv("DATABASE_HOST") ,  # Set to your server's host name or IP address
-        'PORT': os.getenv("DATABASE_PORT"),  # Typically MS SQL Server uses port 1433
+        'HOST': os.getenv("DATABASE_HOST"),
+        'PORT': os.getenv("DATABASE_PORT"),
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Make sure this driver is installed on your machine
-            'extra_params': 'TrustServerCertificate=yes;',  # Optional: for self-signed certificates
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'TrustServerCertificate=yes;',
         },
     },
 }
