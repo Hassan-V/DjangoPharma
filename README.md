@@ -68,3 +68,8 @@ refer to the official documentation for more information
 ### Start the Django development server:
 
     python3 manage.py runserver
+
+
+### To Do
+Check out system
+Auxiliary User Models
