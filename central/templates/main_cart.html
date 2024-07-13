@@ -21,7 +21,7 @@
                 <div class="col-span-1 flex">
                     <!-- Adjusted Image Container -->
                     <div class="flex-shrink-0 w-16 h-16 md:w-20 md:h-20 overflow-hidden">
-                        <img class="w-full h-full object-cover" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        <img class="w-full h-full object-cover" src="{{ item.product.image.url }}" alt="{{ item.product.name }}" onerror="this.onerror=null;this.src='{{ MEDIA_URL }}product_images/default.webp';">
                     </div>
                     <div class="ml-4 flex flex-col justify-between">
                         <span class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">{{ item.product.name }}</span>
