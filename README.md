@@ -52,7 +52,7 @@ For MS SQL Server (set as default):
 for any other db you must change the ENGINE variable in the settings. py accordingly and configure the envirnment variables accordingly
 refer to the official documentation for more information
     
-    https://docs.djangoproject.com/en/5.0/ref/databases/
+[Django Database Reference](https://docs.djangoproject.com/en/5.0/ref/databases/)
 
 ### Run Django migrations and collect static files:
 
