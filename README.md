@@ -15,7 +15,7 @@ Clone the Pre-Production branch of the repository:
 
 bash
 
-    git clone -b Pre-Production https://github.com/Shooooooter/DjangoPharma.git
+    git clone https://github.com/Hassan-V/DjangoPharma.git
 
 
 ### Set up a Python virtual environment (Recommended):
